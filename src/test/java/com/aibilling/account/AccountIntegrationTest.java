@@ -55,12 +55,24 @@ public class AccountIntegrationTest {
     @Autowired
     private BillingCycleRepository billingCycleRepository;
 
+    @Autowired
+    private com.aibilling.contact.repository.ContactRepository contactRepository;
+
+    @Autowired
+    private com.aibilling.site.repository.SiteRepository siteRepository;
+
+    @Autowired
+    private com.aibilling.site.repository.SiteUseMappingRepository siteUseMappingRepository;
+
     private UUID entityId;
     private UUID paymentTermId;
     private UUID billingCycleId;
 
     @BeforeEach
     void setUp() {
+        siteUseMappingRepository.deleteAll();
+        siteRepository.deleteAll();
+        contactRepository.deleteAll();
         accountRepository.deleteAll();
         entityRepository.deleteAll();
         paymentTermRepository.deleteAll();

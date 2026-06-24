@@ -4,6 +4,7 @@ import com.aibilling.account.model.Account;
 import com.aibilling.account.repository.AccountRepository;
 import com.aibilling.account.service.AccountService;
 import com.aibilling.common.enums.Status;
+import com.aibilling.contact.service.ContactService;
 import com.aibilling.exception.BusinessException;
 import com.aibilling.exception.ResourceNotFoundException;
 import com.aibilling.entity.model.Entity;
@@ -25,15 +26,18 @@ public class AccountServiceImpl implements AccountService {
     private final EntityRepository entityRepository;
     private final PaymentTermRepository paymentTermRepository;
     private final BillingCycleRepository billingCycleRepository;
+    private final ContactService contactService;
 
     public AccountServiceImpl(AccountRepository accountRepository, 
                               EntityRepository entityRepository,
                               PaymentTermRepository paymentTermRepository, 
-                              BillingCycleRepository billingCycleRepository) {
+                              BillingCycleRepository billingCycleRepository,
+                              ContactService contactService) {
         this.accountRepository = accountRepository;
         this.entityRepository = entityRepository;
         this.paymentTermRepository = paymentTermRepository;
         this.billingCycleRepository = billingCycleRepository;
+        this.contactService = contactService;
     }
 
     @Override
@@ -49,7 +53,12 @@ public class AccountServiceImpl implements AccountService {
         account.setEntity(entity);
         setSetupData(account, paymentTermId, billingCycleId);
 
-        return accountRepository.save(account);
+        Account savedAccount = accountRepository.save(account);
+
+        // Auto-create "Missing Information" placeholder contact
+        contactService.createPlaceholderContact(savedAccount.getId());
+
+        return savedAccount;
     }
 
     @Override

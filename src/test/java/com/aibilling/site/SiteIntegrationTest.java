@@ -59,6 +59,9 @@ public class SiteIntegrationTest {
     @Autowired
     private SiteUseRepository siteUseRepository;
 
+    @Autowired
+    private com.aibilling.contact.repository.ContactRepository contactRepository;
+
     private UUID accountId;
     private UUID primarySiteUseId;
     private UUID billToSiteUseId;
@@ -68,6 +71,7 @@ public class SiteIntegrationTest {
     void setUp() {
         siteUseMappingRepository.deleteAll();
         siteRepository.deleteAll();
+        contactRepository.deleteAll();
         accountRepository.deleteAll();
         entityRepository.deleteAll();
         siteUseRepository.deleteAll();

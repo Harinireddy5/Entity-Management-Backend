@@ -43,8 +43,24 @@ public class EntityIntegrationTest {
     @Autowired
     private com.aibilling.entity.repository.EntityRepository entityRepository;
 
+    @Autowired
+    private com.aibilling.account.repository.AccountRepository accountRepository;
+
+    @Autowired
+    private com.aibilling.contact.repository.ContactRepository contactRepository;
+
+    @Autowired
+    private com.aibilling.site.repository.SiteRepository siteRepository;
+
+    @Autowired
+    private com.aibilling.site.repository.SiteUseMappingRepository siteUseMappingRepository;
+
     @BeforeEach
     void setUp() {
+        siteUseMappingRepository.deleteAll();
+        siteRepository.deleteAll();
+        contactRepository.deleteAll();
+        accountRepository.deleteAll();
         entityRepository.deleteAll();
         entityTypeRepository.deleteAll();
 

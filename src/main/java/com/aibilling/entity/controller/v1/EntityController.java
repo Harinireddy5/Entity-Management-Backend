@@ -41,10 +41,19 @@ public class EntityController {
 
     private final EntityService service;
     private final EntityMapper mapper;
+    private final com.aibilling.entity.service.EntityAggregationService aggregationService;
 
-    public EntityController(EntityService service, EntityMapper mapper) {
+    public EntityController(EntityService service, EntityMapper mapper, com.aibilling.entity.service.EntityAggregationService aggregationService) {
         this.service = service;
         this.mapper = mapper;
+        this.aggregationService = aggregationService;
+    }
+
+    @GetMapping("/{id}/complete")
+    @Operation(summary = "Get Complete Entity Details Hierarchy", description = "Retrieves Entity Summary, Accounts, Sites, Contacts, and Relationships efficiently.")
+    public ResponseEntity<ApiResponse<com.aibilling.entity.dto.CompleteEntityDetailsResponse>> getCompleteDetails(@PathVariable UUID id) {
+        com.aibilling.entity.dto.CompleteEntityDetailsResponse response = aggregationService.getCompleteEntityDetails(id);
+        return ResponseEntity.ok(ApiResponse.success("Complete Entity Details retrieved successfully", response));
     }
 
     @PostMapping

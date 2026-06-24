@@ -23,4 +23,7 @@ public interface EntityRepository extends BaseRepository<Entity> {
             "  OR EXISTS (SELECT 1 FROM Account a JOIN Contact c ON c.account = a WHERE a.entity = e AND (LOWER(c.firstName) LIKE LOWER(CONCAT('%', :query, '%')) OR LOWER(c.lastName) LIKE LOWER(CONCAT('%', :query, '%')))) " +
             ")")
     Page<Entity> searchGlobalEntities(@Param("query") String query, Pageable pageable);
+
+    @Query("SELECT e FROM Entity e LEFT JOIN FETCH e.details ed WHERE e.id = :id")
+    java.util.Optional<Entity> findByIdWithDetails(@Param("id") java.util.UUID id);
 }

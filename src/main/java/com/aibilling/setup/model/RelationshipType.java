@@ -13,7 +13,7 @@ import lombok.Setter;
  * JPA entity representing Relationship Type master data.
  */
 @Entity
-@Table(name = "relationship_types")
+@Table(name = "cx_entity_rel_types")
 @Getter
 @Setter
 @NoArgsConstructor

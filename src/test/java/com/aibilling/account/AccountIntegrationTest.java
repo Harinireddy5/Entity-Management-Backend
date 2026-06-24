@@ -64,6 +64,9 @@ public class AccountIntegrationTest {
     @Autowired
     private com.aibilling.site.repository.SiteUseMappingRepository siteUseMappingRepository;
 
+    @Autowired
+    private com.aibilling.relationship.repository.EntityRelationshipRepository entityRelationshipRepository;
+
     private UUID entityId;
     private UUID paymentTermId;
     private UUID billingCycleId;
@@ -73,6 +76,7 @@ public class AccountIntegrationTest {
         siteUseMappingRepository.deleteAll();
         siteRepository.deleteAll();
         contactRepository.deleteAll();
+        entityRelationshipRepository.deleteAll();
         accountRepository.deleteAll();
         entityRepository.deleteAll();
         paymentTermRepository.deleteAll();

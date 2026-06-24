@@ -60,6 +60,9 @@ public class ContactIntegrationTest {
     @Autowired
     private com.aibilling.site.repository.SiteUseMappingRepository siteUseMappingRepository;
 
+    @Autowired
+    private com.aibilling.relationship.repository.EntityRelationshipRepository entityRelationshipRepository;
+
     private UUID accountId;
     private UUID contactTypeId;
 
@@ -68,6 +71,7 @@ public class ContactIntegrationTest {
         siteUseMappingRepository.deleteAll();
         siteRepository.deleteAll();
         contactRepository.deleteAll();
+        entityRelationshipRepository.deleteAll();
         accountRepository.deleteAll();
         entityRepository.deleteAll();
         contactTypeRepository.deleteAll();

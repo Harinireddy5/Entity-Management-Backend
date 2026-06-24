@@ -34,6 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
+@org.springframework.test.annotation.DirtiesContext(classMode = org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 public class SiteIntegrationTest {
@@ -72,13 +73,13 @@ public class SiteIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        siteUseMappingRepository.deleteAll();
-        siteRepository.deleteAll();
-        contactRepository.deleteAll();
-        entityRelationshipRepository.deleteAll();
-        accountRepository.deleteAll();
-        entityRepository.deleteAll();
-        siteUseRepository.deleteAll();
+
+
+
+
+
+
+
 
         // Seed Site Uses
         SiteUse primary = new SiteUse();

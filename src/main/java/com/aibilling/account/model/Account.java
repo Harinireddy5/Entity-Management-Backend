@@ -16,6 +16,8 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -26,6 +28,8 @@ import java.util.UUID;
  */
 @jakarta.persistence.Entity
 @Table(name = "cx_entity_accounts")
+@SQLDelete(sql = "UPDATE cx_entity_accounts SET status = 'DELETED' WHERE id = ? and version = ?")
+@SQLRestriction("status != 'DELETED'")
 public class Account {
 
     @Id
@@ -76,6 +80,10 @@ public class Account {
 
     @Column(name = "updated_by", length = 100)
     private String updatedBy;
+
+    @jakarta.persistence.Version
+    @Column(name = "version")
+    private Long version;
 
     @PrePersist
     public void prePersist() {
@@ -205,5 +213,13 @@ public class Account {
 
     public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }

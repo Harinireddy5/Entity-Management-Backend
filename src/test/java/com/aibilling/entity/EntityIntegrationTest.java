@@ -27,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration tests for Entity CRUD endpoints and validation business rules.
  */
 @SpringBootTest
+@org.springframework.test.annotation.DirtiesContext(classMode = org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 public class EntityIntegrationTest {
@@ -60,13 +61,13 @@ public class EntityIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        siteUseMappingRepository.deleteAll();
-        siteRepository.deleteAll();
-        contactRepository.deleteAll();
-        entityRelationshipRepository.deleteAll();
-        accountRepository.deleteAll();
-        entityRepository.deleteAll();
-        entityTypeRepository.deleteAll();
+
+
+
+
+
+
+
 
         // Seed customer entity type
         EntityType customer = new EntityType();

@@ -30,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
+@org.springframework.test.annotation.DirtiesContext(classMode = org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 public class SearchIntegrationTest {
@@ -95,9 +96,9 @@ public class SearchIntegrationTest {
 
     @AfterEach
     void tearDown() {
-        contactRepository.deleteAll();
-        accountRepository.deleteAll();
-        entityRepository.deleteAll();
+
+
+
     }
 
     @Test

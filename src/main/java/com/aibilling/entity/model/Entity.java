@@ -13,6 +13,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -23,6 +25,8 @@ import java.util.Set;
  */
 @jakarta.persistence.Entity
 @Table(name = "cx_entity")
+@SQLDelete(sql = "UPDATE cx_entity SET status = 'DELETED' WHERE id = ? and version = ?")
+@SQLRestriction("status != 'DELETED'")
 @Getter
 @Setter
 @NoArgsConstructor

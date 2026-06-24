@@ -59,8 +59,13 @@ public abstract class BaseEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @LastModifiedBy
     @Column(name = "UPDATED_BY", length = 50)
     private String updatedBy;
+
+    @jakarta.persistence.Version
+    @Column(name = "version")
+    private Long version;
 
     public UUID getId() { return id; }
     public void setId(UUID id) { this.id = id; }
@@ -74,6 +79,8 @@ public abstract class BaseEntity {
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
     public String getUpdatedBy() { return updatedBy; }
     public void setUpdatedBy(String updatedBy) { this.updatedBy = updatedBy; }
+    public Long getVersion() { return version; }
+    public void setVersion(Long version) { this.version = version; }
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 20)

@@ -1,0 +1,15 @@
+ALTER TABLE cx_entity ADD COLUMN version BIGINT DEFAULT 0;
+ALTER TABLE cx_entity_type ADD COLUMN version BIGINT DEFAULT 0;
+ALTER TABLE cx_entity_details ADD COLUMN version BIGINT DEFAULT 0;
+ALTER TABLE cx_entity_accounts ADD COLUMN version BIGINT DEFAULT 0;
+ALTER TABLE cx_cust_acct_site ADD COLUMN version BIGINT DEFAULT 0;
+ALTER TABLE cx_cust_acct_site_use ADD COLUMN version BIGINT DEFAULT 0;
+ALTER TABLE cx_cust_acct_contacts ADD COLUMN version BIGINT DEFAULT 0;
+ALTER TABLE cx_entity_rel_types ADD COLUMN version BIGINT DEFAULT 0;
+ALTER TABLE cx_entity_relationships ADD COLUMN version BIGINT DEFAULT 0;
+ALTER TABLE payment_terms ADD COLUMN version BIGINT DEFAULT 0;
+ALTER TABLE billing_cycles ADD COLUMN version BIGINT DEFAULT 0;
+ALTER TABLE entity_types ADD COLUMN version BIGINT DEFAULT 0;
+ALTER TABLE contact_types ADD COLUMN version BIGINT DEFAULT 0;
+ALTER TABLE site_uses ADD COLUMN version BIGINT DEFAULT 0;
+ALTER TABLE relationship_types ADD COLUMN version BIGINT DEFAULT 0;

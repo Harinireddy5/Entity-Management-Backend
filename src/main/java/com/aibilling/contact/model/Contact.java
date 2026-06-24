@@ -16,12 +16,16 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Table(name = "cx_cust_acct_contacts")
+@SQLDelete(sql = "UPDATE cx_cust_acct_contacts SET status = 'DELETED' WHERE id = ? and version = ?")
+@SQLRestriction("status != 'DELETED'")
 public class Contact {
 
     @Id
@@ -74,6 +78,10 @@ public class Contact {
 
     @Column(name = "updated_by", length = 100)
     private String updatedBy;
+
+    @jakarta.persistence.Version
+    @Column(name = "version")
+    private Long version;
 
     @PrePersist
     public void prePersist() {
@@ -133,4 +141,7 @@ public class Contact {
 
     public String getUpdatedBy() { return updatedBy; }
     public void setUpdatedBy(String updatedBy) { this.updatedBy = updatedBy; }
+
+    public Long getVersion() { return version; }
+    public void setVersion(Long version) { this.version = version; }
 }

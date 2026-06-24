@@ -28,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
+@org.springframework.test.annotation.DirtiesContext(classMode = org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 public class EntityRelationshipIntegrationTest {
@@ -66,13 +67,13 @@ public class EntityRelationshipIntegrationTest {
     @BeforeEach
     void setUp() {
         // Correct order deletion to prevent constraint violations
-        siteUseMappingRepository.deleteAll();
-        siteRepository.deleteAll();
-        contactRepository.deleteAll();
-        entityRelationshipRepository.deleteAll();
-        accountRepository.deleteAll();
-        entityRepository.deleteAll();
-        relationshipTypeRepository.deleteAll();
+
+
+
+
+
+
+
 
         // Seed Subject Entity
         Entity subject = new Entity();

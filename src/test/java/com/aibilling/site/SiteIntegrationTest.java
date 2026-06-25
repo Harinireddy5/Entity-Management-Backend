@@ -125,7 +125,7 @@ public class SiteIntegrationTest {
         request.setCountry("USA");
         request.setSiteUseIds(List.of(primarySiteUseId, billToSiteUseId));
 
-        mockMvc.perform(post("/api/v1/sites")
+        mockMvc.perform(post("/v1/sites")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
@@ -143,7 +143,7 @@ public class SiteIntegrationTest {
         request.setAddressLine1("456 Branch St");
         request.setSiteUseIds(List.of(billToSiteUseId)); // No primary
 
-        mockMvc.perform(post("/api/v1/sites")
+        mockMvc.perform(post("/v1/sites")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isUnprocessableEntity())
@@ -159,7 +159,7 @@ public class SiteIntegrationTest {
         createReq.setAddressLine1("123 St");
         createReq.setSiteUseIds(List.of(primarySiteUseId));
         
-        MvcResult result = mockMvc.perform(post("/api/v1/sites")
+        MvcResult result = mockMvc.perform(post("/v1/sites")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createReq)))
                 .andExpect(status().isCreated())
@@ -175,7 +175,7 @@ public class SiteIntegrationTest {
         updateReq.setSiteUseIds(List.of(primarySiteUseId, shipToSiteUseId));
         updateReq.setStatus(Status.ACTIVE);
 
-        mockMvc.perform(put("/api/v1/sites/" + siteIdStr)
+        mockMvc.perform(put("/v1/sites/" + siteIdStr)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateReq)))
                 .andExpect(status().isOk())
@@ -192,7 +192,7 @@ public class SiteIntegrationTest {
         createReq.setAddressLine1("123 St");
         createReq.setSiteUseIds(List.of(primarySiteUseId));
         
-        MvcResult result = mockMvc.perform(post("/api/v1/sites")
+        MvcResult result = mockMvc.perform(post("/v1/sites")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createReq)))
                 .andExpect(status().isCreated())
@@ -200,7 +200,7 @@ public class SiteIntegrationTest {
 
         String siteIdStr = objectMapper.readTree(result.getResponse().getContentAsString()).get("data").get("id").asText();
 
-        mockMvc.perform(delete("/api/v1/sites/" + siteIdStr))
+        mockMvc.perform(delete("/v1/sites/" + siteIdStr))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(jsonPath("$.message").value("Cannot delete the final site of an account. Each account must have at least one active site."));
     }
@@ -214,7 +214,7 @@ public class SiteIntegrationTest {
         createReq1.setAddressLine1("123 St");
         createReq1.setSiteUseIds(List.of(primarySiteUseId));
         
-        MvcResult result1 = mockMvc.perform(post("/api/v1/sites")
+        MvcResult result1 = mockMvc.perform(post("/v1/sites")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createReq1)))
                 .andExpect(status().isCreated())
@@ -229,13 +229,13 @@ public class SiteIntegrationTest {
         createReq2.setAddressLine1("456 St");
         createReq2.setSiteUseIds(List.of(billToSiteUseId));
         
-        mockMvc.perform(post("/api/v1/sites")
+        mockMvc.perform(post("/v1/sites")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createReq2)))
                 .andExpect(status().isCreated());
 
         // Delete primary
-        mockMvc.perform(delete("/api/v1/sites/" + primarySiteIdStr))
+        mockMvc.perform(delete("/v1/sites/" + primarySiteIdStr))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(jsonPath("$.message").value("Cannot delete this site because it is the only PRIMARY site for the account."));
     }
@@ -248,12 +248,12 @@ public class SiteIntegrationTest {
         createReq.setAddressLine1("123 St");
         createReq.setSiteUseIds(List.of(primarySiteUseId));
         
-        mockMvc.perform(post("/api/v1/sites")
+        mockMvc.perform(post("/v1/sites")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createReq)))
                 .andExpect(status().isCreated());
 
-        mockMvc.perform(get("/api/v1/sites/account/" + accountId))
+        mockMvc.perform(get("/v1/sites/account/" + accountId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data").isArray())

@@ -1,5 +1,6 @@
 package com.aibilling.search.controller.v1;
 
+import com.aibilling.common.constants.AppConstants;
 import com.aibilling.search.dto.EntitySearchResponse;
 import com.aibilling.search.service.SearchService;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/search")
+@RequestMapping(AppConstants.API_V1 + "/search")
 @RequiredArgsConstructor
 public class SearchController {
 

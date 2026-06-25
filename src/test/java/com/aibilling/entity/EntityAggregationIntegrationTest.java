@@ -126,7 +126,7 @@ public class EntityAggregationIntegrationTest {
 
     @Test
     void getCompleteEntityDetails_ShouldReturnHierarchy() throws Exception {
-        mockMvc.perform(get("/api/v1/entities/" + rootEntityId + "/complete"))
+        mockMvc.perform(get("/v1/entities/" + rootEntityId + "/complete"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.entitySummary.id", is(rootEntityId.toString())))
                 .andExpect(jsonPath("$.data.relationships", hasSize(1)))

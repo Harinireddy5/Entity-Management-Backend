@@ -19,10 +19,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 /**
  * Service implementation for managing Entity aggregate roots.
  */
-@Slf4j
 @Service
 @Transactional(readOnly = true)
 public class EntityServiceImpl extends BaseServiceImpl<Entity> implements EntityService {
@@ -36,6 +38,17 @@ public class EntityServiceImpl extends BaseServiceImpl<Entity> implements Entity
         super(entityRepository, "Entity");
         this.entityRepository = entityRepository;
         this.entityTypeRepository = entityTypeRepository;
+    }
+
+    @Override
+    public Entity findById(UUID id) {
+        return entityRepository.findByIdWithDetails(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Entity", "id", id.toString()));
+    }
+
+    @Override
+    public Page<Entity> findAll(Pageable pageable) {
+        return entityRepository.findAllWithDetails(pageable);
     }
 
     @Override
@@ -119,17 +132,30 @@ public class EntityServiceImpl extends BaseServiceImpl<Entity> implements Entity
             }
         }
 
-        // Update entity types
-        existing.getEntityTypes().clear();
-        if (entityTypeCodes != null && !entityTypeCodes.isEmpty()) {
+        // Update entity types using merge to avoid Hibernate action queue duplicate key issues
+        if (entityTypeCodes == null) {
+            existing.getEntityTypes().clear();
+        } else {
+            existing.getEntityTypes().removeIf(mapping -> {
+                boolean keep = entityTypeCodes.contains(mapping.getEntityType().getCode());
+                if (!keep) {
+                    mapping.setEntity(null);
+                }
+                return !keep;
+            });
+            
             for (String code : entityTypeCodes) {
-                EntityType entityType = entityTypeRepository.findByCodeAndStatus(code, Status.ACTIVE)
-                        .orElseThrow(() -> new ResourceNotFoundException("EntityType", "code", code));
+                boolean alreadyExists = existing.getEntityTypes().stream()
+                        .anyMatch(m -> m.getEntityType().getCode().equals(code));
+                if (!alreadyExists) {
+                    EntityType entityType = entityTypeRepository.findByCodeAndStatus(code, Status.ACTIVE)
+                            .orElseThrow(() -> new ResourceNotFoundException("EntityType", "code", code));
 
-                EntityTypeMapping mapping = new EntityTypeMapping();
-                mapping.setEntityType(entityType);
-                mapping.setStatus(Status.ACTIVE);
-                existing.addEntityType(mapping);
+                    EntityTypeMapping mapping = new EntityTypeMapping();
+                    mapping.setEntityType(entityType);
+                    mapping.setStatus(Status.ACTIVE);
+                    existing.addEntityType(mapping);
+                }
             }
         }
 

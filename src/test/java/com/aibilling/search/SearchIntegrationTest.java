@@ -103,7 +103,7 @@ public class SearchIntegrationTest {
 
     @Test
     void searchByEntityOrganizationName() throws Exception {
-        mockMvc.perform(get("/api/v1/search/entities")
+        mockMvc.perform(get("/v1/search/entities")
                 .param("query", "Tech Corp"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content", hasSize(1)))
@@ -112,7 +112,7 @@ public class SearchIntegrationTest {
 
     @Test
     void searchByAccountName() throws Exception {
-        mockMvc.perform(get("/api/v1/search/entities")
+        mockMvc.perform(get("/v1/search/entities")
                 .param("query", "Personal Account"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content", hasSize(1)))
@@ -121,7 +121,7 @@ public class SearchIntegrationTest {
 
     @Test
     void searchByContactFirstName() throws Exception {
-        mockMvc.perform(get("/api/v1/search/entities")
+        mockMvc.perform(get("/v1/search/entities")
                 .param("query", "Alice"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content", hasSize(1)))
@@ -130,7 +130,7 @@ public class SearchIntegrationTest {
 
     @Test
     void searchByContactLastName() throws Exception {
-        mockMvc.perform(get("/api/v1/search/entities")
+        mockMvc.perform(get("/v1/search/entities")
                 .param("query", "Johnson"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content", hasSize(1)))
@@ -139,7 +139,7 @@ public class SearchIntegrationTest {
 
     @Test
     void searchNoResults() throws Exception {
-        mockMvc.perform(get("/api/v1/search/entities")
+        mockMvc.perform(get("/v1/search/entities")
                 .param("query", "NonExistentName123"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content", hasSize(0)));
@@ -147,7 +147,7 @@ public class SearchIntegrationTest {
 
     @Test
     void searchEmptyQueryReturnsAll() throws Exception {
-        mockMvc.perform(get("/api/v1/search/entities")
+        mockMvc.perform(get("/v1/search/entities")
                 .param("query", ""))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content", hasSize(2)));
@@ -159,7 +159,7 @@ public class SearchIntegrationTest {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
 
-        mockMvc.perform(get("/api/v1/search/entities")
+        mockMvc.perform(get("/v1/search/entities")
                 .param("query", "Global"))
                 .andExpect(status().isOk());
 

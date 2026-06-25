@@ -15,7 +15,7 @@ import org.springframework.data.repository.query.Param;
 @Repository
 public interface EntityRepository extends BaseRepository<Entity> {
 
-    @Query(value = "SELECT e FROM Entity e LEFT JOIN e.details ed " +
+    @Query(value = "SELECT e FROM Entity e LEFT JOIN FETCH e.details ed " +
             "WHERE (:query IS NULL OR :query = '' " +
             "  OR LOWER(ed.organizationName) LIKE LOWER(CONCAT('%', :query, '%')) " +
             "  OR LOWER(ed.fullName) LIKE LOWER(CONCAT('%', :query, '%')) " +
@@ -24,6 +24,10 @@ public interface EntityRepository extends BaseRepository<Entity> {
             ")")
     Page<Entity> searchGlobalEntities(@Param("query") String query, Pageable pageable);
 
-    @Query("SELECT e FROM Entity e LEFT JOIN FETCH e.details ed WHERE e.id = :id")
+    @Query("SELECT e FROM Entity e LEFT JOIN FETCH e.details LEFT JOIN FETCH e.entityTypes et LEFT JOIN FETCH et.entityType WHERE e.id = :id")
     java.util.Optional<Entity> findByIdWithDetails(@Param("id") java.util.UUID id);
+
+    @Query(value = "SELECT DISTINCT e FROM Entity e LEFT JOIN FETCH e.details LEFT JOIN FETCH e.entityTypes et LEFT JOIN FETCH et.entityType",
+           countQuery = "SELECT COUNT(e) FROM Entity e")
+    Page<Entity> findAllWithDetails(Pageable pageable);
 }

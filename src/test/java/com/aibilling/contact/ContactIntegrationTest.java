@@ -109,7 +109,7 @@ public class ContactIntegrationTest {
         request.setDesignation("VP Engineering");
         request.setContactTypeId(contactTypeId);
 
-        mockMvc.perform(post("/api/v1/contacts")
+        mockMvc.perform(post("/v1/contacts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
@@ -130,7 +130,7 @@ public class ContactIntegrationTest {
         ContactCreateRequest req1 = new ContactCreateRequest();
         req1.setAccountId(accountId);
         req1.setFirstName("Alice");
-        mockMvc.perform(post("/api/v1/contacts")
+        mockMvc.perform(post("/v1/contacts")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(req1)))
                 .andExpect(status().isCreated());
@@ -139,12 +139,12 @@ public class ContactIntegrationTest {
         ContactCreateRequest req2 = new ContactCreateRequest();
         req2.setAccountId(accountId);
         req2.setFirstName("Bob");
-        mockMvc.perform(post("/api/v1/contacts")
+        mockMvc.perform(post("/v1/contacts")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(req2)))
                 .andExpect(status().isCreated());
 
-        mockMvc.perform(get("/api/v1/contacts/account/" + accountId))
+        mockMvc.perform(get("/v1/contacts/account/" + accountId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.length()").value(2));
@@ -156,7 +156,7 @@ public class ContactIntegrationTest {
         ContactCreateRequest createReq = new ContactCreateRequest();
         createReq.setAccountId(accountId);
         createReq.setFirstName("Jane");
-        MvcResult result = mockMvc.perform(post("/api/v1/contacts")
+        MvcResult result = mockMvc.perform(post("/v1/contacts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createReq)))
                 .andExpect(status().isCreated())
@@ -172,7 +172,7 @@ public class ContactIntegrationTest {
         updateReq.setEmail("jane@example.com");
         updateReq.setStatus(Status.ACTIVE);
 
-        mockMvc.perform(put("/api/v1/contacts/" + contactIdStr)
+        mockMvc.perform(put("/v1/contacts/" + contactIdStr)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateReq)))
                 .andExpect(status().isOk())
@@ -185,7 +185,7 @@ public class ContactIntegrationTest {
         ContactCreateRequest createReq = new ContactCreateRequest();
         createReq.setAccountId(accountId);
         createReq.setFirstName("Delete Me");
-        MvcResult result = mockMvc.perform(post("/api/v1/contacts")
+        MvcResult result = mockMvc.perform(post("/v1/contacts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createReq)))
                 .andExpect(status().isCreated())
@@ -194,7 +194,7 @@ public class ContactIntegrationTest {
         String contactIdStr = objectMapper.readTree(result.getResponse().getContentAsString())
                 .get("data").get("id").asText();
 
-        mockMvc.perform(delete("/api/v1/contacts/" + contactIdStr))
+        mockMvc.perform(delete("/v1/contacts/" + contactIdStr))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true));
     }
@@ -209,7 +209,7 @@ public class ContactIntegrationTest {
                 }
                 """.formatted(entityRepository.findAll().get(0).getId().toString());
 
-        MvcResult result = mockMvc.perform(post("/api/v1/accounts")
+        MvcResult result = mockMvc.perform(post("/v1/accounts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(accountPayload))
                 .andExpect(status().isCreated())
@@ -219,7 +219,7 @@ public class ContactIntegrationTest {
                 .get("data").get("id").asText();
 
         // List contacts for the newly created account — should have 1 placeholder
-        mockMvc.perform(get("/api/v1/contacts/account/" + newAccountIdStr))
+        mockMvc.perform(get("/v1/contacts/account/" + newAccountIdStr))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.length()").value(1))
                 .andExpect(jsonPath("$.data[0].firstName").value("Missing Information"))
@@ -236,7 +236,7 @@ public class ContactIntegrationTest {
                 }
                 """.formatted(entityRepository.findAll().get(0).getId().toString());
 
-        MvcResult accountResult = mockMvc.perform(post("/api/v1/accounts")
+        MvcResult accountResult = mockMvc.perform(post("/v1/accounts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(accountPayload))
                 .andExpect(status().isCreated())
@@ -246,7 +246,7 @@ public class ContactIntegrationTest {
                 .get("data").get("id").asText();
 
         // Get the placeholder contact
-        MvcResult contactsResult = mockMvc.perform(get("/api/v1/contacts/account/" + newAccountIdStr))
+        MvcResult contactsResult = mockMvc.perform(get("/v1/contacts/account/" + newAccountIdStr))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -260,7 +260,7 @@ public class ContactIntegrationTest {
         updateReq.setEmail("real@example.com");
         updateReq.setStatus(Status.ACTIVE);
 
-        mockMvc.perform(put("/api/v1/contacts/" + placeholderIdStr)
+        mockMvc.perform(put("/v1/contacts/" + placeholderIdStr)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateReq)))
                 .andExpect(status().isOk())

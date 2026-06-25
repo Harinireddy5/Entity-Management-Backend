@@ -105,7 +105,7 @@ public class EntityRelationshipIntegrationTest {
         request.setRelationshipTypeId(relationshipTypeId);
         request.setObjectEntityId(objectId);
 
-        mockMvc.perform(post("/api/v1/entity-relationships")
+        mockMvc.perform(post("/v1/entity-relationships")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
@@ -123,7 +123,7 @@ public class EntityRelationshipIntegrationTest {
         request.setRelationshipTypeId(relationshipTypeId);
         request.setObjectEntityId(subjectId); // Same entity
 
-        mockMvc.perform(post("/api/v1/entity-relationships")
+        mockMvc.perform(post("/v1/entity-relationships")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isUnprocessableEntity()) // 422
@@ -139,20 +139,20 @@ public class EntityRelationshipIntegrationTest {
         request.setRelationshipTypeId(relationshipTypeId);
         request.setObjectEntityId(objectId);
 
-        mockMvc.perform(post("/api/v1/entity-relationships")
+        mockMvc.perform(post("/v1/entity-relationships")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated());
 
         // Query by subject
-        mockMvc.perform(get("/api/v1/entity-relationships?subjectId=" + subjectId))
+        mockMvc.perform(get("/v1/entity-relationships?subjectId=" + subjectId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data", hasSize(1)))
                 .andExpect(jsonPath("$.data[0].subjectEntityId").value(subjectId.toString()))
                 .andExpect(jsonPath("$.data[0].objectEntityId").value(objectId.toString()));
 
         // Query by different subject
-        mockMvc.perform(get("/api/v1/entity-relationships?subjectId=" + objectId))
+        mockMvc.perform(get("/v1/entity-relationships?subjectId=" + objectId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data", hasSize(0)));
     }
@@ -164,13 +164,13 @@ public class EntityRelationshipIntegrationTest {
         request.setRelationshipTypeId(relationshipTypeId);
         request.setObjectEntityId(objectId);
 
-        mockMvc.perform(post("/api/v1/entity-relationships")
+        mockMvc.perform(post("/v1/entity-relationships")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated());
 
         // Query by object
-        mockMvc.perform(get("/api/v1/entity-relationships?objectId=" + objectId))
+        mockMvc.perform(get("/v1/entity-relationships?objectId=" + objectId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data", hasSize(1)))
                 .andExpect(jsonPath("$.data[0].objectEntityId").value(objectId.toString()));
@@ -183,18 +183,18 @@ public class EntityRelationshipIntegrationTest {
         request.setRelationshipTypeId(relationshipTypeId);
         request.setObjectEntityId(objectId);
 
-        mockMvc.perform(post("/api/v1/entity-relationships")
+        mockMvc.perform(post("/v1/entity-relationships")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated());
 
         // Query by entityId matching subject
-        mockMvc.perform(get("/api/v1/entity-relationships?entityId=" + subjectId))
+        mockMvc.perform(get("/v1/entity-relationships?entityId=" + subjectId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data", hasSize(1)));
 
         // Query by entityId matching object
-        mockMvc.perform(get("/api/v1/entity-relationships?entityId=" + objectId))
+        mockMvc.perform(get("/v1/entity-relationships?entityId=" + objectId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data", hasSize(1)));
     }
@@ -206,7 +206,7 @@ public class EntityRelationshipIntegrationTest {
         request.setRelationshipTypeId(relationshipTypeId);
         request.setObjectEntityId(objectId);
 
-        String response = mockMvc.perform(post("/api/v1/entity-relationships")
+        String response = mockMvc.perform(post("/v1/entity-relationships")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
@@ -215,12 +215,12 @@ public class EntityRelationshipIntegrationTest {
         String id = objectMapper.readTree(response).get("data").get("id").asText();
 
         // Delete relationship
-        mockMvc.perform(delete("/api/v1/entity-relationships/" + id))
+        mockMvc.perform(delete("/v1/entity-relationships/" + id))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true));
 
         // Verify it is no longer listed as active
-        mockMvc.perform(get("/api/v1/entity-relationships?entityId=" + subjectId))
+        mockMvc.perform(get("/v1/entity-relationships?entityId=" + subjectId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data", hasSize(0)));
     }

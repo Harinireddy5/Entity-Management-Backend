@@ -95,7 +95,7 @@ public class EntityIntegrationTest {
         request.setEntityTypeCodes(List.of("CUSTOMER", "SUPPLIER"));
         request.setOrganizationDetails(orgDetails);
 
-        mockMvc.perform(post("/api/v1/entities")
+        mockMvc.perform(post("/v1/entities")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
@@ -116,7 +116,7 @@ public class EntityIntegrationTest {
         request.setEntityTypeCodes(List.of("CUSTOMER"));
         request.setOrganizationDetails(orgDetails);
 
-        mockMvc.perform(post("/api/v1/entities")
+        mockMvc.perform(post("/v1/entities")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest());
@@ -134,7 +134,7 @@ public class EntityIntegrationTest {
         request.setEntityTypeCodes(List.of("CUSTOMER"));
         request.setPersonDetails(personDetails);
 
-        mockMvc.perform(post("/api/v1/entities")
+        mockMvc.perform(post("/v1/entities")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
@@ -157,7 +157,7 @@ public class EntityIntegrationTest {
         request.setEntityTypeCodes(List.of("CUSTOMER"));
         request.setPersonDetails(personDetails);
 
-        mockMvc.perform(post("/api/v1/entities")
+        mockMvc.perform(post("/v1/entities")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest());

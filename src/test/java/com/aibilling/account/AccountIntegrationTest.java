@@ -117,7 +117,7 @@ public class AccountIntegrationTest {
         request.setCreditClassification("Class A");
         request.setCreditRisk("Low Risk");
 
-        mockMvc.perform(post("/api/v1/accounts")
+        mockMvc.perform(post("/v1/accounts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
@@ -135,12 +135,12 @@ public class AccountIntegrationTest {
         AccountCreateRequest request = new AccountCreateRequest();
         request.setEntityId(entityId);
         request.setAccountName("Test Account 1");
-        mockMvc.perform(post("/api/v1/accounts")
+        mockMvc.perform(post("/v1/accounts")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated());
 
-        mockMvc.perform(get("/api/v1/accounts/entity/" + entityId))
+        mockMvc.perform(get("/v1/accounts/entity/" + entityId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data").isArray())
@@ -153,7 +153,7 @@ public class AccountIntegrationTest {
         AccountCreateRequest createReq = new AccountCreateRequest();
         createReq.setEntityId(entityId);
         createReq.setAccountName("Initial Account");
-        MvcResult result = mockMvc.perform(post("/api/v1/accounts")
+        MvcResult result = mockMvc.perform(post("/v1/accounts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createReq)))
                 .andExpect(status().isCreated())
@@ -169,7 +169,7 @@ public class AccountIntegrationTest {
         updateReq.setStatus(Status.ACTIVE);
         updateReq.setCreditLimit(new BigDecimal("10000.00"));
         
-        mockMvc.perform(put("/api/v1/accounts/" + accountId)
+        mockMvc.perform(put("/v1/accounts/" + accountId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateReq)))
                 .andExpect(status().isOk())
@@ -184,7 +184,7 @@ public class AccountIntegrationTest {
         AccountCreateRequest createReq = new AccountCreateRequest();
         createReq.setEntityId(entityId);
         createReq.setAccountName("The Only Account");
-        MvcResult result = mockMvc.perform(post("/api/v1/accounts")
+        MvcResult result = mockMvc.perform(post("/v1/accounts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createReq)))
                 .andExpect(status().isCreated())
@@ -194,7 +194,7 @@ public class AccountIntegrationTest {
         String accountIdStr = objectMapper.readTree(responseBody).get("data").get("id").asText();
 
         // Attempt to delete it
-        mockMvc.perform(delete("/api/v1/accounts/" + accountIdStr))
+        mockMvc.perform(delete("/v1/accounts/" + accountIdStr))
                 .andExpect(status().isUnprocessableEntity()) // Assuming BusinessException maps to 422 Unprocessable Entity
                 .andExpect(jsonPath("$.message").value("Cannot delete the final account of an entity. Each entity must have at least one active account."));
     }
@@ -205,7 +205,7 @@ public class AccountIntegrationTest {
         AccountCreateRequest createReq1 = new AccountCreateRequest();
         createReq1.setEntityId(entityId);
         createReq1.setAccountName("Account 1");
-        mockMvc.perform(post("/api/v1/accounts")
+        mockMvc.perform(post("/v1/accounts")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(createReq1)));
 
@@ -213,7 +213,7 @@ public class AccountIntegrationTest {
         AccountCreateRequest createReq2 = new AccountCreateRequest();
         createReq2.setEntityId(entityId);
         createReq2.setAccountName("Account 2");
-        MvcResult result2 = mockMvc.perform(post("/api/v1/accounts")
+        MvcResult result2 = mockMvc.perform(post("/v1/accounts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createReq2)))
                 .andReturn();
@@ -222,7 +222,7 @@ public class AccountIntegrationTest {
         String accountIdStr = objectMapper.readTree(responseBody).get("data").get("id").asText();
 
         // Delete Account 2
-        mockMvc.perform(delete("/api/v1/accounts/" + accountIdStr))
+        mockMvc.perform(delete("/v1/accounts/" + accountIdStr))
                 .andExpect(status().isOk());
     }
 }

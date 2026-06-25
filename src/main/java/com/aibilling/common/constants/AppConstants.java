@@ -27,7 +27,7 @@ public final class AppConstants {
 
     // ==================== API Versioning ====================
     /** Base path for API v1 endpoints. */
-    public static final String API_V1 = "/api/v1";
+    public static final String API_V1 = "/v1";
 
     // ==================== Audit ====================
     /** Default system user for audit fields when no user is authenticated. */
